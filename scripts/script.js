@@ -128,7 +128,7 @@
 
 
         function applyHeight() {
-            $textarea.height($ajaxContainer.height());
+            $textarea.outerHeight($ajaxContainer.innerHeight());
         }
     };
 
