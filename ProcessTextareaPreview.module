@@ -50,26 +50,25 @@ class ProcessTextareaPreview extends TextareaPreviewBaseProcess implements Modul
     protected $url;
 
     public function __construct() {
-        // related to ConfigurableModule
         TextareaPreviewConfigHelper::apply($this, self::$defaultConfig);
     }
 
     public function init() {
 
         parent::init(); // required
-        
-        
+
+        $this->url = $this->getPageUrl(self::PAGE_NAME);
+
         // load custom preview css if it is configured and exists
         $customCssPath = $this->config->paths->site . $this->cssPath;
         $customCssUrl = $this->config->urls->site . $this->cssPath;
-        
+
         if ($this->cssPath && file_exists($customCssPath)) {
             $this->config->styles->add($customCssUrl);
         } else {
              $this->addStyle('preview');
         }
 
-        $this->url = $this->getPageUrl(self::PAGE_NAME);
         $this->addStyle('style');
 
         $this->addHookAfter('InputfieldTextarea::render', function(HookEvent $event) {
@@ -93,7 +92,8 @@ class ProcessTextareaPreview extends TextareaPreviewBaseProcess implements Modul
                 'fieldOutput' => $fieldOutput,
                 'textareaDomID' => "Inputfield_{$name}",
                 'textareaWrapperDomID' => "wrap_Inputfield_{$name}",
-                'fieldName' => $name
+                'fieldName' => $name,
+                'pageID' => $pageID
             ));
 
             $event->return = $tpl->render();
@@ -113,9 +113,13 @@ class ProcessTextareaPreview extends TextareaPreviewBaseProcess implements Modul
 
         $text = $data->text;
         $field = $this->fields->get($data->fieldName);
+        $page = $this->pages->get($data->pageID);
 
         foreach($field->textformatters as $textformatter){
             $tf = $this->modules->get($textformatter);
+            // make the textformatter aware of the page it is called from
+            // since $this->page or wire('page') might be used in text formatters
+            Wire::setFuel('page', $page);
             $tf->format($text);
         }
 
@@ -142,7 +146,6 @@ class ProcessTextareaPreview extends TextareaPreviewBaseProcess implements Modul
     }
 
     public static function getModuleConfigInputfields(array $data) {
-        // related to ConfigurableModule
         return TextareaPreviewConfigHelper::renderForm($data, self::$defaultConfig);
     }
 }

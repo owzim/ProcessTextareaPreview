@@ -5,6 +5,7 @@
     var AJAX_RELOAD_DELAY     = 1000;
     var AJAX_URL_DATA_KEY     = "ajax-url";
     var FIELD_NAME_DATA_KEY   = "field-name";
+    var PAGE_ID_DATA_KEY      = "page-id";
 
     var IS_PREVIEW_CLASS      = "is-preview";
     var IS_ZOOM_CLASS         = "is-zoom";
@@ -24,6 +25,8 @@
         var isZoomActive = false;
         var ajaxUrl = $previewWrapper.data(AJAX_URL_DATA_KEY);
         var fieldName = $previewWrapper.data(FIELD_NAME_DATA_KEY);
+        var pageID = $previewWrapper.data(PAGE_ID_DATA_KEY);
+
         var originalBodyOverflow;
         var $body = $("body");
 
@@ -45,7 +48,7 @@
                 $.ajax({
                     type: "POST",
                     url: ajaxUrl,
-                    data: { text: value, fieldName: fieldName }
+                    data: { text: value, fieldName: fieldName, pageID: pageID }
                 })
                     .done(function( msg ) {
                         $ajaxContainer.html(msg);

@@ -1,4 +1,4 @@
-<div class="TAP-wrapper" id="<?=$previewWrapperDomID?>" data-ajax-url="<?=$ajaxUrl?>" data-field-name="<?=$fieldName?>">
+<div class="TAP-wrapper" id="<?=$previewWrapperDomID?>" data-page-id="<?=$pageID?>" data-ajax-url="<?=$ajaxUrl?>" data-field-name="<?=$fieldName?>">
     <div class="TAP-field"><?=$fieldOutput?></div>
     <div class="TAP-preview">
         <div class="TAP-previewContent" id="<?=$ajaxContentDomID?>">
