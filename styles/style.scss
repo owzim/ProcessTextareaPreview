@@ -1,0 +1,97 @@
+
+@mixin transition($value) {
+	-webkit-transition: $value;
+	-moz-transition: $value;
+	-ms-transition: $value;
+	-o-transition: $value;
+	transition: $value;
+}
+
+.TAP-icon,
+.TAP-wrapper,
+.TAP-preview,
+.TAP-field,
+.TAP-wrapper {
+	@include transition(all 0.5s);
+}
+
+.TAP-wrapper {
+	position: relative;
+	&.is-preview {
+		.TAP-preview,
+		.TAP-field {
+			width: 50%;
+		}
+
+		.TAP-preview {
+			opacity: 1;
+		}
+	}
+
+	&.is-zoom {
+		background: white;
+		position: fixed;
+		width: 100%;
+		height: 100%;
+		top: 0;
+		left: 0;
+		z-index: 1500;
+
+		.TAP-preview,
+		.TAP-field {
+			padding: 1em;
+		}
+
+	}
+}
+
+
+.TAP-field {
+	width: 100%;
+	textarea {
+		display: block;
+		min-height: 100%;
+		
+		
+		.TAP-wrapper.is-zoom & {
+			&:focus {
+				outline: none;
+
+			}
+			border: 1px solid #ccc;
+			padding: 0.6em;
+		}
+		
+	}
+}
+
+.TAP-preview {
+	// background: #eee;
+	background: white;
+	height: 100%;
+	opacity: 0;
+	overflow: auto;
+	padding-left: 1em;
+	position: absolute;
+	right: 0;
+	top: 0;
+	width: 0;
+}
+
+.TAP-previewContent {
+	// background: green;
+	height: 100%;
+}
+
+.TAP-icon {
+	opacity: 0.3;
+	padding: 0.1em;
+	float: right;
+}
+
+.TAP-icon:hover {
+	opacity: 1;
+}
+
+
+

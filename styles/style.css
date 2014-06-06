@@ -1,0 +1,62 @@
+.TAP-icon,
+.TAP-wrapper,
+.TAP-preview,
+.TAP-field,
+.TAP-wrapper {
+  -webkit-transition: all 0.5s;
+  -moz-transition: all 0.5s;
+  -ms-transition: all 0.5s;
+  -o-transition: all 0.5s;
+  transition: all 0.5s; }
+
+.TAP-wrapper {
+  position: relative; }
+  .TAP-wrapper.is-preview .TAP-preview,
+  .TAP-wrapper.is-preview .TAP-field {
+    width: 50%; }
+  .TAP-wrapper.is-preview .TAP-preview {
+    opacity: 1; }
+  .TAP-wrapper.is-zoom {
+    background: white;
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    z-index: 1500; }
+    .TAP-wrapper.is-zoom .TAP-preview,
+    .TAP-wrapper.is-zoom .TAP-field {
+      padding: 1em; }
+
+.TAP-field {
+  width: 100%; }
+  .TAP-field textarea {
+    display: block;
+    min-height: 100%; }
+    .TAP-wrapper.is-zoom .TAP-field textarea {
+      border: 1px solid #ccc;
+      padding: 0.6em; }
+      .TAP-wrapper.is-zoom .TAP-field textarea:focus {
+        outline: none; }
+
+.TAP-preview {
+  background: white;
+  height: 100%;
+  opacity: 0;
+  overflow: auto;
+  padding-left: 1em;
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 0; }
+
+.TAP-previewContent {
+  height: 100%; }
+
+.TAP-icon {
+  opacity: 0.3;
+  padding: 0.1em;
+  float: right; }
+
+.TAP-icon:hover {
+  opacity: 1; }

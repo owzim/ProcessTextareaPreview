@@ -1,0 +1,150 @@
+<?php
+
+require_once 'includes/autoload.php';
+
+/**
+ * Textarea Preview Module
+ *
+ * @author Christian Raunitschka (owzim)
+ * @copyright Christian Raunitschka
+ * <http://ch.rauni.me>
+ *
+ * ProcessWire 2.x
+ * Copyright (C) 2014 by Ryan Cramer
+ * Licensed under GNU/GPL v2, see LICENSE.TXT
+ *
+ * http://processwire.com
+ *
+ */
+
+class ProcessTextareaPreview extends TextareaPreviewBaseProcess implements Module, ConfigurableModule {
+
+    const TITLE            = 'Textarea Preview';
+    const PAGE_NAME        = 'textarea-preview';
+
+    protected static $defaultConfig = array(
+        'cssPath'  => array(
+            'label' => 'CSS path',
+            'value' => null,
+            'inputfieldType' => 'InputfieldText',
+            'attributes' => array(
+                'description' => 'Path to custom CSS file that should be used for the preview.',
+                'notes' => 'path should be relative to site/ - example: templates/styles/custom-tap.css - all rules should be namespaced to ".TAP-previewContent" to avoid collision with existing admin styles - the default styles are similar to those of Github',
+            )
+        ),
+    );
+
+    public static function getModuleInfo() {
+        return array(
+            'title'      => self::TITLE,
+            'summary'    => 'Summary',
+            'version'    => 1,
+            'author'     => 'Christian Raunitschka (owzim)',
+            'href'       => 'https://github.com/owzim/ProcessTextareaPreview',
+            'autoload'   => true
+        );
+    }
+
+    protected $title    = self::TITLE; // to use within base process class
+    protected $pageName = self::PAGE_NAME; // to use within base process class
+    protected $url;
+
+    public function __construct() {
+        // related to ConfigurableModule
+        TextareaPreviewConfigHelper::apply($this, self::$defaultConfig);
+    }
+
+    public function init() {
+
+        parent::init(); // required
+        
+        
+        // load custom preview css if it is configured and exists
+        $customCssPath = $this->config->paths->site . $this->cssPath;
+        $customCssUrl = $this->config->urls->site . $this->cssPath;
+        
+        if ($this->cssPath && file_exists($customCssPath)) {
+            $this->config->styles->add($customCssUrl);
+        } else {
+             $this->addStyle('preview');
+        }
+
+        $this->url = $this->getPageUrl(self::PAGE_NAME);
+        $this->addStyle('style');
+
+        $this->addHookAfter('InputfieldTextarea::render', function(HookEvent $event) {
+
+            $inputfield = $event->object;
+            $className = get_class($inputfield);
+
+            // currntly only support for plain textarea
+            if($className !== 'InputfieldTextarea') return;
+
+            $fieldOutput = $event->return;
+
+            $name = $inputfield->name;
+            $pageID = $this->input->get->id;
+
+            $tpl = $this->getTemplate('textarea-preview');
+            $tpl->setArray(array(
+                'ajaxUrl' => $this->getPageUrl() . 'preview/',
+                'previewWrapperDomID' => "TAP-wrapper_{$name}",
+                'ajaxContentDomID' => "TAP-previewContent_{$name}",
+                'fieldOutput' => $fieldOutput,
+                'textareaDomID' => "Inputfield_{$name}",
+                'textareaWrapperDomID' => "wrap_Inputfield_{$name}",
+                'fieldName' => $name
+            ));
+
+            $event->return = $tpl->render();
+
+        });
+
+        $this->addHookAfter('ProcessPageEdit::execute', function() {
+           $this->addScript('script');
+        });
+
+    }
+
+
+    public function ___executePreview() {
+
+        $outTpl = $this->getTemplate('textarea-preview-output');
+
+        $data = $this->input;
+
+        $text = $data->text;
+        $field = $this->fields->get($data->fieldName);
+
+        foreach($field->textformatters as $textformatter){
+            $tf = $this->modules->get($textformatter);
+            $tf->format($text);
+        }
+
+        // hacky, other way to prevent output of the admin interface?
+        die($text);
+    }
+
+    public function ___install() {
+
+        $adminRootPage = $this->pages->get($this->config->adminRootPageID);
+        $setupPage = $adminRootPage->child('name=setup');
+
+        $page = $this->installPage($parent = $adminRootPage, $this->pageName, $this->title);
+        $page->addStatus(Page::statusHidden);
+        $page->save();
+
+        // $this->installPage($parent = $setupPage, $this->pageName, $this->title);
+
+    }
+    public function ___uninstall() {
+
+        $this->uninstallPages();
+
+    }
+
+    public static function getModuleConfigInputfields(array $data) {
+        // related to ConfigurableModule
+        return TextareaPreviewConfigHelper::renderForm($data, self::$defaultConfig);
+    }
+}
