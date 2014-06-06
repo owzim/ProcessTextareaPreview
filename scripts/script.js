@@ -3,9 +3,7 @@
     console = typeof(console) !== "undefined" ? console : { log: function() {} };
 
     var AJAX_RELOAD_DELAY     = 1000;
-    var AJAX_URL_DATA_KEY     = "ajax-url";
-    var FIELD_NAME_DATA_KEY   = "field-name";
-    var PAGE_ID_DATA_KEY      = "page-id";
+    var PARAMS_DATA_KEY       = "params";
 
     var IS_PREVIEW_CLASS      = "is-preview";
     var IS_ZOOM_CLASS         = "is-zoom";
@@ -23,9 +21,8 @@
 
         var isPreviewActive = false;
         var isZoomActive = false;
-        var ajaxUrl = $previewWrapper.data(AJAX_URL_DATA_KEY);
-        var fieldName = $previewWrapper.data(FIELD_NAME_DATA_KEY);
-        var pageID = $previewWrapper.data(PAGE_ID_DATA_KEY);
+
+        var params = $previewWrapper.data(PARAMS_DATA_KEY);
 
         var originalBodyOverflow;
         var $body = $("body");
@@ -47,8 +44,8 @@
             if(isPreviewActive) {
                 $.ajax({
                     type: "POST",
-                    url: ajaxUrl,
-                    data: { text: value, fieldName: fieldName, pageID: pageID }
+                    url: params.ajaxUrl,
+                    data: { text: value, fieldName: params.fieldName, pageID: params.pageID }
                 })
                     .done(function( msg ) {
                         $ajaxContainer.html(msg);

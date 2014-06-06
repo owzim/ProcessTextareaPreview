@@ -86,14 +86,16 @@ class ProcessTextareaPreview extends TextareaPreviewBaseProcess implements Modul
 
             $tpl = $this->getTemplate('textarea-wrap');
             $tpl->setArray(array(
-                'ajaxUrl' => $this->getPageUrl() . 'preview/',
                 'previewWrapperDomID' => "TAP-wrapper_{$name}",
                 'ajaxContentDomID' => "TAP-previewContent_{$name}",
                 'fieldOutput' => $fieldOutput,
                 'textareaDomID' => "Inputfield_{$name}",
                 'textareaWrapperDomID' => "wrap_Inputfield_{$name}",
-                'fieldName' => $name,
-                'pageID' => $pageID
+                'params' => json_encode(array(
+                    'ajaxUrl' => $this->getPageUrl() . 'preview/',
+                    'fieldName' => $name,
+                    'pageID' => $pageID,
+                )),
             ));
 
             $event->return = $tpl->render();
@@ -109,11 +111,11 @@ class ProcessTextareaPreview extends TextareaPreviewBaseProcess implements Modul
 
     public function ___executePreview() {
 
-        $data = $this->input;
+        $input = $this->input;
 
-        $text = $data->text;
-        $field = $this->fields->get($data->fieldName);
-        $page = $this->pages->get($data->pageID);
+        $text = $input->text;
+        $field = $this->fields->get($input->fieldName);
+        $page = $this->pages->get($input->pageID);
 
         foreach($field->textformatters as $textformatter){
             $tf = $this->modules->get($textformatter);
