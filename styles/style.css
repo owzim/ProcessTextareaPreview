@@ -54,9 +54,12 @@
   height: 100%; }
 
 .TAP-icon {
+  line-height: 1.4em !important;
   opacity: 0.3;
   padding: 0.1em;
   float: right; }
+  .InputfieldStateCollapsed .TAP-icon {
+    opacity: 0; }
 
 .TAP-icon:hover {
   opacity: 1; }
