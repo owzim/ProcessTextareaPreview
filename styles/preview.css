@@ -2,11 +2,9 @@
   font-family: Helvetica, arial, sans-serif;
   font-size: 14px;
   line-height: 1.6;
-  padding: 0; }
+  background-color: white; }
 .TAP-previewContent > *:first-child {
   margin-top: 0 !important; }
-.TAP-previewContent > *:last-child {
-  margin-bottom: 0 !important; }
 .TAP-previewContent a {
   color: #4183C4; }
 .TAP-previewContent a.absent {
@@ -28,7 +26,6 @@
   cursor: text;
   position: relative; }
 .TAP-previewContent h1:hover a.anchor, .TAP-previewContent h2:hover a.anchor, .TAP-previewContent h3:hover a.anchor, .TAP-previewContent h4:hover a.anchor, .TAP-previewContent h5:hover a.anchor, .TAP-previewContent h6:hover a.anchor {
-  background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA09pVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMy1jMDExIDY2LjE0NTY2MSwgMjAxMi8wMi8wNi0xNDo1NjoyNyAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNiAoMTMuMCAyMDEyMDMwNS5tLjQxNSAyMDEyLzAzLzA1OjIxOjAwOjAwKSAgKE1hY2ludG9zaCkiIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6OUM2NjlDQjI4ODBGMTFFMTg1ODlEODNERDJBRjUwQTQiIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6OUM2NjlDQjM4ODBGMTFFMTg1ODlEODNERDJBRjUwQTQiPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDo5QzY2OUNCMDg4MEYxMUUxODU4OUQ4M0REMkFGNTBBNCIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDo5QzY2OUNCMTg4MEYxMUUxODU4OUQ4M0REMkFGNTBBNCIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/PsQhXeAAAABfSURBVHjaYvz//z8DJYCRUgMYQAbAMBQIAvEqkBQWXI6sHqwHiwG70TTBxGaiWwjCTGgOUgJiF1J8wMRAIUA34B4Q76HUBelAfJYSA0CuMIEaRP8wGIkGMA54bgQIMACAmkXJi0hKJQAAAABJRU5ErkJggg==) no-repeat 10px center;
   text-decoration: none; }
 .TAP-previewContent h1 tt, .TAP-previewContent h1 code {
   font-size: inherit; }
@@ -61,21 +58,20 @@
 .TAP-previewContent p, .TAP-previewContent blockquote, .TAP-previewContent ul, .TAP-previewContent ol, .TAP-previewContent dl, .TAP-previewContent li, .TAP-previewContent table, .TAP-previewContent pre {
   margin: 15px 0; }
 .TAP-previewContent hr {
-  background: transparent url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAYAAAAECAYAAACtBE5DAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyJpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYwIDYxLjEzNDc3NywgMjAxMC8wMi8xMi0xNzozMjowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNSBNYWNpbnRvc2giIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6OENDRjNBN0E2NTZBMTFFMEI3QjRBODM4NzJDMjlGNDgiIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6OENDRjNBN0I2NTZBMTFFMEI3QjRBODM4NzJDMjlGNDgiPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDo4Q0NGM0E3ODY1NkExMUUwQjdCNEE4Mzg3MkMyOUY0OCIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDo4Q0NGM0E3OTY1NkExMUUwQjdCNEE4Mzg3MkMyOUY0OCIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/PqqezsUAAAAfSURBVHjaYmRABcYwBiM2QSA4y4hNEKYDQxAEAAIMAHNGAzhkPOlYAAAAAElFTkSuQmCC) repeat-x 0 0;
   border: 0 none;
-  color: #cccccc;
-  height: 4px;
+  background: #eee;
+  height: 2px;
   padding: 0; }
-.TAP-previewContent body > h2:first-child {
+.TAP-previewContent > h2:first-child {
   margin-top: 0;
   padding-top: 0; }
-.TAP-previewContent body > h1:first-child {
+.TAP-previewContent > h1:first-child {
   margin-top: 0;
   padding-top: 0; }
-.TAP-previewContent body > h1:first-child + h2 {
+.TAP-previewContent > h1:first-child + h2 {
   margin-top: 0;
   padding-top: 0; }
-.TAP-previewContent body > h3:first-child, .TAP-previewContent body > h4:first-child, .TAP-previewContent body > h5:first-child, .TAP-previewContent body > h6:first-child {
+.TAP-previewContent > h3:first-child, .TAP-previewContent > h4:first-child, .TAP-previewContent > h5:first-child, .TAP-previewContent > h6:first-child {
   margin-top: 0;
   padding-top: 0; }
 .TAP-previewContent a:first-child h1, .TAP-previewContent a:first-child h2, .TAP-previewContent a:first-child h3, .TAP-previewContent a:first-child h4, .TAP-previewContent a:first-child h5, .TAP-previewContent a:first-child h6 {
@@ -85,12 +81,12 @@
   margin-top: 0; }
 .TAP-previewContent li p.first {
   display: inline-block; }
+.TAP-previewContent li {
+  margin: 0; }
 .TAP-previewContent ul, .TAP-previewContent ol {
   padding-left: 30px; }
 .TAP-previewContent ul :first-child, .TAP-previewContent ol :first-child {
   margin-top: 0; }
-.TAP-previewContent ul :last-child, .TAP-previewContent ol :last-child {
-  margin-bottom: 0; }
 .TAP-previewContent dl {
   padding: 0; }
 .TAP-previewContent dl dt {
@@ -113,7 +109,7 @@
 .TAP-previewContent dl dd > :last-child {
   margin-bottom: 0; }
 .TAP-previewContent blockquote {
-  border-left: 4px solid #dddddd;
+  border-left: 4px solid #eee;
   padding: 0 15px;
   color: #777777; }
 .TAP-previewContent blockquote > :first-child {
@@ -121,7 +117,8 @@
 .TAP-previewContent blockquote > :last-child {
   margin-bottom: 0; }
 .TAP-previewContent table {
-  padding: 0; }
+  padding: 0;
+  border-collapse: collapse; }
 .TAP-previewContent table tr {
   border-top: 1px solid #cccccc;
   background-color: white;
@@ -132,12 +129,10 @@
 .TAP-previewContent table tr th {
   font-weight: bold;
   border: 1px solid #cccccc;
-  text-align: left;
   margin: 0;
   padding: 6px 13px; }
 .TAP-previewContent table tr td {
   border: 1px solid #cccccc;
-  text-align: left;
   margin: 0;
   padding: 6px 13px; }
 .TAP-previewContent table tr th :first-child, .TAP-previewContent table tr td :first-child {
@@ -238,3 +233,14 @@
 .TAP-previewContent pre code, .TAP-previewContent pre tt {
   background-color: transparent;
   border: none; }
+.TAP-previewContent sup {
+  font-size: 0.83em;
+  vertical-align: super;
+  line-height: 0; }
+.TAP-previewContent * {
+  -webkit-print-color-adjust: exact; }
+@media print {
+  .TAP-previewContent table, .TAP-previewContent pre {
+    page-break-inside: avoid; }
+  .TAP-previewContent pre {
+    word-wrap: break-word; } }

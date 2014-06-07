@@ -41,6 +41,9 @@
 		.TAP-field {
 			padding: 1em;
 		}
+		.TAP-preview {
+			padding-right: 2em;
+		}
 
 	}
 }
@@ -76,11 +79,10 @@
 }
 
 .TAP-previewContent {
-	// background: green;
 	height: 100%;
+	& > *:last-child {
+	   margin-bottom: 1em; }
 }
-
-
 
 .TAP-icon {
 	line-height: 1.4em !important;
@@ -95,6 +97,8 @@
 .TAP-icon:hover {
 	opacity: 1;
 }
+
+
 
 
 
