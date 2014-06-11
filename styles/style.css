@@ -23,12 +23,12 @@
     height: 100%;
     top: 0;
     left: 0;
-    z-index: 1500; }
+    z-index: 201; }
     .TAP-wrapper.is-zoom .TAP-preview,
     .TAP-wrapper.is-zoom .TAP-field {
       padding: 1em; }
     .TAP-wrapper.is-zoom .TAP-preview {
-      padding-right: 2em; }
+      padding-right: 1em; }
 
 .TAP-field {
   width: 100%; }
@@ -46,16 +46,18 @@
   height: 100%;
   opacity: 0;
   overflow: auto;
-  padding-left: 1em;
   position: absolute;
   right: 0;
   top: 0;
-  width: 0; }
+  width: 0;
+  overflow: hidden;
+  padding-left: 1em;
+  z-index: 201; }
 
 .TAP-previewContent {
+  width: 100%;
+  border: none;
   height: 100%; }
-  .TAP-previewContent > *:last-child {
-    margin-bottom: 1em; }
 
 .TAP-icon {
   line-height: 1.4em !important;

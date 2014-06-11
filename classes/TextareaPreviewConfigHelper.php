@@ -30,6 +30,7 @@ class TextareaPreviewConfigHelper {
         $config = (object) $config; // cast to object, because it's prettier to acces keys
 
         foreach ($config as $key => $valueData) {
+            $valueData = (object)$valueData;
             if(!isset($data->$key)) {
                 $data->$key = $valueData->value;
             }

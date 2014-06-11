@@ -26,6 +26,8 @@ class TextareaPreviewBaseProcess extends Process {
     protected function getUrl() {
         return $this->config->urls->get(get_class($this));
     }
+    
+    
 
     /**
      * add an item to the breadcrumbs path, linking to the root page of the module
@@ -70,6 +72,19 @@ class TextareaPreviewBaseProcess extends Process {
      * @return string the url of the added script
      */
     protected function addScript($name) {
+        $url = $this->getScriptUrl($name);
+        $this->config->scripts->add($url);
+        return $url;
+    }
+    
+    
+    /**
+     * add a CSS file to config's styles array,
+     * which has to reside in the module's styles/ directory
+     * @param string $name the name of the file without .css extension
+     * @return string the url of the added style
+     */
+    protected function getScriptUrl($name) {
         $suffix = 'scripts/' . $name . '.js';
 
         $url = $this->getUrl() . $suffix;
@@ -78,7 +93,7 @@ class TextareaPreviewBaseProcess extends Process {
         if (!file_exists($path)) {
             $this->error("TextareaPreview::addScript: '{$suffix}' does not exist.");
         }
-        $this->config->scripts->add($url);
+        
         return $url;
     }
 
@@ -89,16 +104,29 @@ class TextareaPreviewBaseProcess extends Process {
      * @return string the url of the added style
      */
     protected function addStyle($name) {
+        $url = $this->getStyleUrl($name);
+        $this->config->styles->add($url);
+        return $url;
+    }
+    
+    
+    /**
+     * add a CSS file to config's styles array,
+     * which has to reside in the module's styles/ directory
+     * @param string $name the name of the file without .css extension
+     * @return string the url of the added style
+     */
+    protected function getStyleUrl($name) {
         $suffix = 'styles/' . $name . '.css';
 
         $url = $this->getUrl() . $suffix;
         $path = $this->getPath() . $suffix;
 
         if (!file_exists($path)) {
-            $this->error("TextareaPreview::addStyle: '{$suffix}' does not exist.");
+            $this->error("TextareaPreview::getStyleUrl: '{$suffix}' does not exist.");
         }
-        $this->config->styles->add($url);
-        return $url;
+        
+        return $url;      
     }
 
     /**

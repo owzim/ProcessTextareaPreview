@@ -1,18 +1,24 @@
-.TAP-previewContent {
 
 
-	& {
+
+	body {
 	   font-family: Helvetica, arial, sans-serif;
 	   font-size: 14px;
 	   line-height: 1.6;
 	   // padding-top: 10px;
 	   // padding-bottom: 10px;
-	   background-color: white;
+	   // background-color: white;
 	   // padding: 30px;
+	   // background: red;
+	   padding: 0;
+	   margin: 0;
 	}
 
-	& > *:first-child {
+	body > *:first-child > *:first-child {
 	   margin-top: 0 !important; }
+	   
+	body > *:first-child > *:last-child {
+	   margin-bottom: 0 !important; }
 
 	a {
 	   color: #4183C4; }
@@ -89,16 +95,16 @@
 	   padding: 0;
 	}
 
-	& > h2:first-child {
+	body > h2:first-child {
 	   margin-top: 0;
 	   padding-top: 0; }
-	& > h1:first-child {
+	body > h1:first-child {
 	   margin-top: 0;
 	   padding-top: 0; }
-	& > h1:first-child + h2 {
+	body > h1:first-child + h2 {
 	   margin-top: 0;
 	   padding-top: 0; }
-	& > h3:first-child, & > h4:first-child, & > h5:first-child, & > h6:first-child {
+	body > h3:first-child, body > h4:first-child, body > h5:first-child, body > h6:first-child {
 	   margin-top: 0;
 	   padding-top: 0; }
 
@@ -282,7 +288,7 @@
 		 -webkit-print-color-adjust: exact;
 	}
 	// @media screen and (min-width: 914px) {
-	//    & {
+	//    body {
 	//       width: 854px;
 	//       margin:0 auto;
 	//    }
@@ -296,5 +302,3 @@
 		 }
 	}
 
-
-}

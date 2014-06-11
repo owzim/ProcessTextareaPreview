@@ -19,12 +19,33 @@ require_once 'includes/autoload.php';
 
 class ProcessTextareaPreview extends TextareaPreviewBaseProcess implements Module, ConfigurableModule {
 
-    const TITLE            = 'Textarea Preview';
-    const PAGE_NAME        = 'textarea-preview';
+    const TITLE               = 'Textarea Preview';
+    const PAGE_NAME           = 'textarea-preview';
+    
+    const COOKIE_NAME_TEXT    = "%s_%s_%s_text";
+    const COOKIE_NAME_CHANGED = "%s_%s_%s_changed";
+    
+    const AJAX_FETCH_SEGMENT  = "ajaxfetch";
+    const IFRAME_URL_SEGMENT  = "preview";
 
     protected static $defaultConfig = array(
-        'cssPath'  => array(
-            'label' => 'CSS path',
+        'cssTheme'  => array(
+            'label' => 'CSS Theme',
+            'value' => 'theme-github',
+            'inputfieldType' => 'InputfieldRadios',
+
+            'options' => array(
+                'Github' => 'theme-github',
+                'Solarized Dark' => 'theme-solarized-dark'
+            ),
+            
+            'attributes' => array(
+                'description' => 'Choose the theme that should be used for the preview.',
+                'optionColumns' => 1
+            )
+        ),
+        'customCssPath'  => array(
+            'label' => 'Custom CSS path',
             'value' => null,
             'inputfieldType' => 'InputfieldText',
             'attributes' => array(
@@ -32,13 +53,28 @@ class ProcessTextareaPreview extends TextareaPreviewBaseProcess implements Modul
                 'notes' => 'path should be relative to site/ - example: templates/styles/custom-tap.css - all rules should be namespaced to ".TAP-previewContent" to avoid collision with existing admin styles - the default styles are similar to those of Github',
             )
         ),
+        'registerChangesInterval'  => array(
+            'label' => 'Register changes interval',
+            'value' => 1000,
+            'inputfieldType' => 'InputfieldInteger',
+            'attributes' => array(
+                'type' => 'number',
+                'min' => 333,
+                'size' => 5,
+                'description' => 'The interval in milliseconds changes within the text area are tracked and sent to the server to be run through the text formatters - default is 1000',
+            )
+        )
+    );
+
+    protected static $allowedInputfieldTypes = array(
+        'InputfieldTextarea'
     );
 
     public static function getModuleInfo() {
         return array(
             'title'      => self::TITLE,
             'summary'    => 'Adds a preview and zoom button to regular text areas for live preview',
-            'version'    => 6,
+            'version'    => 13,
             'author'     => 'Christian Raunitschka (owzim)',
             'href'       => 'https://github.com/owzim/ProcessTextareaPreview',
             'autoload'   => true
@@ -48,6 +84,8 @@ class ProcessTextareaPreview extends TextareaPreviewBaseProcess implements Modul
     protected $title    = self::TITLE; // to use within base process class
     protected $pageName = self::PAGE_NAME; // to use within base process class
     protected $url;
+    protected $previewStyleUrl;
+    protected $jsConfig;
 
     public function __construct() {
         TextareaPreviewConfigHelper::apply($this, self::$defaultConfig);
@@ -60,62 +98,101 @@ class ProcessTextareaPreview extends TextareaPreviewBaseProcess implements Modul
         $this->url = $this->getPageUrl(self::PAGE_NAME);
 
         // load custom preview css if it is configured and exists
-        $customCssPath = $this->config->paths->site . $this->cssPath;
-        $customCssUrl = $this->config->urls->site . $this->cssPath;
+        $customCssPath = $this->config->paths->site . $this->customCssPath;
+        $customCssUrl = $this->config->urls->site . $this->customCssPath;
 
-        if ($this->cssPath && file_exists($customCssPath)) {
-            $this->config->styles->add($customCssUrl);
+        if ($this->customCssPath && file_exists($customCssPath)) {
+            $this->previewStyleUrl = $customCssUrl;
         } else {
-             $this->addStyle('preview');
+            $this->previewStyleUrl = $this->getStyleUrl($this->cssTheme);
         }
 
-        $this->addStyle('style');
-
-        $this->addHookAfter('InputfieldTextarea::render', function(HookEvent $event) {
-
-            $inputfield = $event->object;
-            $className = get_class($inputfield);
-
-            // currntly only support for plain textarea
-            if($className !== 'InputfieldTextarea') return;
-
-            $fieldOutput = $event->return;
-
-            $name = $inputfield->name;
-            $pageID = $this->input->get->id;
-
-            $tpl = $this->getTemplate('textarea-wrap');
-            $tpl->setArray(array(
-                'previewWrapperDomID' => "TAP-wrapper_{$name}",
-                'ajaxContentDomID' => "TAP-previewContent_{$name}",
-                'fieldOutput' => $fieldOutput,
-                'textareaDomID' => "Inputfield_{$name}",
-                'textareaWrapperDomID' => "wrap_Inputfield_{$name}",
-                'params' => json_encode(array(
-                    'ajaxUrl' => $this->getPageUrl() . 'preview/',
-                    'fieldName' => $name,
-                    'pageID' => $pageID,
-                )),
-            ));
-
-            $event->return = $tpl->render();
-
-        });
-
-        $this->addHookAfter('ProcessPageEdit::execute', function() {
-           $this->addScript('script');
-        });
-
+        $this->addHookAfter('InputfieldTextarea::render', $this, 'hook_InputfieldTextarea_render');
+        $this->addHookAfter('ProcessPageEdit::execute', $this, 'hook_ProcessPageEdit_execute');
+        
+        
+        $this->jsConfig = array(
+            'customCssPath' => $this->customCssPath,
+            'registerChangesInterval' => $this->registerChangesInterval
+        );
+        
+        
     }
+    
+    
+    protected function hook_InputfieldTextarea_render(HookEvent $event) {
+        $inputfield = $event->object;
+        $className = get_class($inputfield);
+        
+        // currently only support for plain textarea
+        if(!in_array($className, self::$allowedInputfieldTypes)) return;
+        
+        $fieldOutput = $event->return;
 
+        $fieldName = $inputfield->name;
+        $pageID = $this->input->get->id;
+        
+        $urlSegements = "/{$pageID}/{$fieldName}/";
+        
+        $tpl = $this->getTemplate('textarea-wrap');
+        $tpl->setArray(array(
+            'fieldOutput'          => $fieldOutput,
+            'textareaWrapperDomID' => "wrap_Inputfield_{$fieldName}",
+            'textareaDomID'        => "Inputfield_{$fieldName}",
+            
+            'previewWrapperDomID'  => "TAP-wrapper_{$fieldName}",
+            'iframeDomID'          => "TAP-previewContent_{$fieldName}",
+            
+            
+            'params' => json_encode(array_merge($this->jsConfig, array(
+                'iframeUrl'            => $this->getPageUrl() . self::IFRAME_URL_SEGMENT . $urlSegements,
+                'ajaxUrl'              => $this->getPageUrl() . self::AJAX_FETCH_SEGMENT . $urlSegements,
+                'cookieNameText'       => $this->getCookieName($fieldName, $pageID, self::COOKIE_NAME_TEXT),
+                'cookieNameChanged'    => $this->getCookieName($fieldName, $pageID, self::COOKIE_NAME_CHANGED),
+            )))
+        ));
 
-    public function ___executePreview() {
+        $event->return = $tpl->render();
+    }
+    
+    
+    protected function hook_ProcessPageEdit_execute(HookEvent $event) {
+        
+        // get the edited page
+        $page = $event->object->page;
+        
+        // get all the fields of that page
+        $fields = $page->template->fieldgroup->fields;
+        $hasAllowedInputfieldType = false;
+        
+        // loop through all fields and see if any of those are allowed
+        foreach ($fields as $field) {
+            $inputfieldType = (string) $field->type->inputfieldClass;
+            if(in_array($inputfieldType, self::$allowedInputfieldTypes)) {
+                $hasAllowedInputfieldType = true;
+                break;
+            }
+        }
+        
+        // only then add the styles and scripts
+        if ($hasAllowedInputfieldType) {
+            $this->config->js($this->getName(), $this->jsConfig);
+            $this->addStyle('style');
+            $this->addScript('jquery.cookie');
+            $this->addScript('main');
+        }        
+    }
+    
+    
+    public function ___executeAjaxFetch() {
+        
+        $text = $this->input->text;
 
-        $input = $this->input;
-
-        $text = $input->text;
-        $field = $this->fields->get($input->fieldName);
-        $page = $this->pages->get($input->pageID);
+        $pageID = $this->input->urlSegment2;
+        $fieldName = $this->input->urlSegment3;        
+        
+        $field = $this->fields->get($fieldName);
+        $page = $this->pages->get($pageID);
 
         foreach($field->textformatters as $textformatter){
             $tf = $this->modules->get($textformatter);
@@ -123,11 +200,42 @@ class ProcessTextareaPreview extends TextareaPreviewBaseProcess implements Modul
             // since $this->page or wire('page') might be used in text formatters
             Wire::setFuel('page', $page);
             $tf->format($text);
-        }
-
-        // hacky, other way to prevent output of the admin interface?
-        die($text);
+        }       
+        
+        return $text;
     }
+    
+    
+    public function ___executePreview() {
+
+        $pageID = $this->input->urlSegment2;
+        $fieldName = $this->input->urlSegment3;
+        
+        
+        foreach ($this->config->scripts->unique() as $file) {
+            $scripts[] = $file;
+        }
+        $scripts[] = $this->getScriptUrl('jquery.cookie');
+        $scripts[] = $this->getScriptUrl('main') . '?v=' . $this->getVersion();
+     
+              
+        $params = array_merge($this->jsConfig, array(
+            'cookieNameText'    => $this->getCookieName($fieldName, $pageID, self::COOKIE_NAME_TEXT),
+            'cookieNameChanged' => $this->getCookieName($fieldName, $pageID, self::COOKIE_NAME_CHANGED),
+        ));
+        
+        
+        $tpl = $this->getTemplate('iframe-content');  
+        $tpl->setArray(array(
+            'styleUrl' => $this->previewStyleUrl . '?v=' . $this->getVersion(),
+            'scripts' => $scripts,
+            'params' => json_encode($params),
+        ));
+        
+        die($tpl->render());
+        
+    }
+
 
     public function ___install() {
 
@@ -141,13 +249,32 @@ class ProcessTextareaPreview extends TextareaPreviewBaseProcess implements Modul
         // $this->installPage($parent = $setupPage, $this->pageName, $this->title);
 
     }
+    
+    
     public function ___uninstall() {
 
         $this->uninstallPages();
 
     }
 
+
     public static function getModuleConfigInputfields(array $data) {
         return TextareaPreviewConfigHelper::renderForm($data, self::$defaultConfig);
+    }
+    
+    
+    public function getCookieName($fieldName, $pageID, $stringTemplate) {
+        return sprintf($stringTemplate, $this->getName(), $fieldName, $pageID);
+    }
+    
+    
+    protected function getName() {
+        return get_class($this);
+    }
+    
+    
+    protected function getVersion() {
+        $moduleInfo = self::getModuleInfo();
+        return $moduleInfo['version'];
     }
 }
