@@ -26,8 +26,8 @@ class TextareaPreviewBaseProcess extends Process {
     protected function getUrl() {
         return $this->config->urls->get(get_class($this));
     }
-    
-    
+
+
 
     /**
      * add an item to the breadcrumbs path, linking to the root page of the module
@@ -76,8 +76,8 @@ class TextareaPreviewBaseProcess extends Process {
         $this->config->scripts->add($url);
         return $url;
     }
-    
-    
+
+
     /**
      * add a CSS file to config's styles array,
      * which has to reside in the module's styles/ directory
@@ -93,7 +93,7 @@ class TextareaPreviewBaseProcess extends Process {
         if (!file_exists($path)) {
             $this->error("TextareaPreview::addScript: '{$suffix}' does not exist.");
         }
-        
+
         return $url;
     }
 
@@ -108,8 +108,8 @@ class TextareaPreviewBaseProcess extends Process {
         $this->config->styles->add($url);
         return $url;
     }
-    
-    
+
+
     /**
      * add a CSS file to config's styles array,
      * which has to reside in the module's styles/ directory
@@ -125,8 +125,8 @@ class TextareaPreviewBaseProcess extends Process {
         if (!file_exists($path)) {
             $this->error("TextareaPreview::getStyleUrl: '{$suffix}' does not exist.");
         }
-        
-        return $url;      
+
+        return $url;
     }
 
     /**

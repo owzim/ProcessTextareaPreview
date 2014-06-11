@@ -1,16 +1,16 @@
 (function($, window, undefined) { // safe closure
 
     console = typeof(console) !== "undefined" ? console : { log: function() {} };
-    
-    
+
+
     var HAS_CHANGED_TRUE = "true";
     var HAS_CHANGED_FALSE = "false";
-    
+
     var DEFAULT_AJAX_SAVE_DELAY  = 1000;
 
     var IS_PREVIEW_CLASS         = "is-preview";
     var IS_ZOOM_CLASS            = "is-zoom";
-    
+
     var ICON_ZOOM_CLASS          = "TAP-icon fa fa-arrows-alt";
     var ICON_PREVIEW_CLASS       = "TAP-icon fa fa-eye";
     var ICON_ZOOM_TITLE          = "zoom";
@@ -26,23 +26,23 @@
     owzim.TextareaPreview = typeof(owzim.TextareaPreview) !== "undefined" ? owzim.TextareaPreview : {};
 
     owzim.TextareaPreview.initField = function($textarea, $textareaWrapper, $previewWrapper, $iframe, params) {
-        
+
         var isPreviewActive = false;
-        var isZoomActive = false;   
-        
+        var isZoomActive = false;
+
         // console.log('params.ajaxUrl', params.ajaxUrl);
         // console.log('params.iframeUrl', params.iframeUrl);
         // console.log('params', params);
-        
+
         var lastKeyPressed = -1;
-        
+
         /*
             var to save the overflow setting of admins body element
             in full mode it's set to overflow: hidden
             back to normal more, the original value is set
          */
         var originalBodyOverflow;
-         
+
         var $body = $("body");
 
         var $iconZoom =
@@ -53,12 +53,12 @@
         var $iconPreview =
             $(ICON_ELEMENT)
             .attr("class", ICON_PREVIEW_CLASS)
-            .attr("title", ICON_PREVIEW_TITLE);     
-        
+            .attr("title", ICON_PREVIEW_TITLE);
+
         var applyHeight = function() {
             $textarea.outerHeight($iframe.innerHeight());
         };
-        
+
         var fetchFormattedString = function(value) {
             if (isPreviewActive) {
                 $.ajax({
@@ -78,20 +78,20 @@
             params.registerChangesInterval || DEFAULT_AJAX_SAVE_DELAY,
             { trailing: true }
         );
-        
+
         $textareaWrapper.find(ICONS_PARENT_SELECTOR).prepend($iconZoom).prepend($iconPreview);
-        
+
         $textarea.bind('input propertychange', function() {
             if (isAllowedKey(lastKeyPressed)) {
                  fetchFormattedStringTrottled(this.value);
             }
         });
-        
+
         // event handlers
         (function() {
-            
+
             $iconPreview.click(function(e) {
-                
+
                 e.preventDefault();
                 e.stopImmediatePropagation();  // prevent header toggle to be fired
 
@@ -104,13 +104,13 @@
                     $previewWrapper.addClass(IS_PREVIEW_CLASS);
                     $iframe.attr("src", params.iframeUrl);
                 }
-            
+
                 isPreviewActive = !isPreviewActive;
                 fetchFormattedString($textarea[0].value);
             });
 
             $iconZoom.click(function(e) {
-                
+
                 e.preventDefault();
                 e.stopImmediatePropagation();  // prevent header toggle to be fired
 
@@ -124,7 +124,7 @@
 
                     originalBodyOverflow = $body.css("overflow");
                     $body.css("overflow", "hidden");
-                    
+
                     $previewWrapper.addClass(IS_ZOOM_CLASS);
 
                     applyHeight();
@@ -135,8 +135,8 @@
                 isZoomActive = !isZoomActive;
             });
 
-            
-            
+
+
             $(document).keyup(function(e) {
                 if (isZoomActive) {
                     if (e.keyCode == 27) { // ESC
@@ -144,7 +144,7 @@
                     }
                 }
             });
-            
+
             $(document).keydown(function(e) {
                 lastKeyPressed = e.keyCode;
             });
@@ -155,35 +155,35 @@
                     applyHeight();
                 }
             });
-            
+
         })();
 
-        
+
     };
-    
+
     owzim.TextareaPreview.initPreview = function($content, params) {
-        
+
         var fetchCookie = function() {
-        
+
             var hasChanged = getCookie(params.cookieNameChanged);
-            var text = getCookie(params.cookieNameText);         
-            
+            var text = getCookie(params.cookieNameText);
+
             if (hasChanged === HAS_CHANGED_TRUE || !hasChanged) {
                 console.log(params.cookieNameText + " has changed, refesh");
                 $content.html(text);
                 setCookie(params.cookieNameChanged, HAS_CHANGED_FALSE);
-                
+
             }
 
             setTimeout(fetchCookie, 333);
-        };        
+        };
         fetchCookie();
     };
-    
+
     var isAllowedKey = function(keyCode) {
         return (IGNORE_KEYS.indexOf(keyCode) === -1);
     };
-    
+
     var setCookie = function(name, value) {
         if (window.localStorage) {
             // console.log("localStorage supported");
@@ -192,7 +192,7 @@
             $.cookie(name, value, { expires: 1, path: '/' });
         }
     };
-    
+
     var getCookie = function(name) {
         if (window.localStorage) {
             return localStorage[name];
@@ -200,7 +200,7 @@
             return $.cookie(name);
         }
     };
-    
+
     /*
         the following code is taken from underscore.js, modified a bit
         see: https://github.com/jashkenas/underscore/
@@ -235,7 +235,7 @@
             return result;
         };
     };
-    
-    
-    
+
+
+
 })(jQuery, window);
