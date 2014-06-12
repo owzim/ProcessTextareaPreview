@@ -29,6 +29,20 @@ class ProcessTextareaPreview extends TextareaPreviewBaseProcess implements Modul
     const IFRAME_URL_SEGMENT  = "preview";
 
     protected static $defaultConfig = array(
+        'trackChangesInterval'  => array(
+            'label' => 'Track changes interval',
+            'value' => 1000,
+            'inputfieldType' => 'InputfieldInteger',
+            'attributes' => array(
+                'icon' => 'refresh',
+                'columnWidth' => 25,
+                'type' => 'number',
+                'min' => 333,
+                'size' => 5,
+                'description' => 'The interval in milliseconds changes within the text area are tracked and sent to the server to be run through the text formatters - default is 1000',
+            )
+        ),
+        
         'cssTheme'  => array(
             'label' => 'CSS Theme',
             'value' => 'theme-github',
@@ -36,12 +50,14 @@ class ProcessTextareaPreview extends TextareaPreviewBaseProcess implements Modul
 
             'options' => array(
                 'Github' => 'theme-github',
-                'Solarized Dark' => 'theme-solarized-dark'
+                'Solarized Dark' => 'theme-solarized-dark',
             ),
 
             'attributes' => array(
                 'description' => 'Choose the theme that should be used for the preview.',
-                'optionColumns' => 1
+                'optionColumns' => 0,
+                'columnWidth' => 25,
+                'icon' => 'th-large',
             )
         ),
         'customCssPath'  => array(
@@ -49,21 +65,12 @@ class ProcessTextareaPreview extends TextareaPreviewBaseProcess implements Modul
             'value' => null,
             'inputfieldType' => 'InputfieldText',
             'attributes' => array(
+                'icon' => 'css3',
+                'columnWidth' => 50,
                 'description' => 'Path to custom CSS file that should be used for the preview.',
-                'notes' => 'path should be relative to site/ - example: templates/styles/custom-tap.css - all rules should be namespaced to ".TAP-previewContent" to avoid collision with existing admin styles - the default styles are similar to those of Github',
+                'notes' => 'path should be relative to site/ - example: templates/styles/custom-tap.css',
             )
         ),
-        'registerChangesInterval'  => array(
-            'label' => 'Register changes interval',
-            'value' => 1000,
-            'inputfieldType' => 'InputfieldInteger',
-            'attributes' => array(
-                'type' => 'number',
-                'min' => 333,
-                'size' => 5,
-                'description' => 'The interval in milliseconds changes within the text area are tracked and sent to the server to be run through the text formatters - default is 1000',
-            )
-        )
     );
 
     protected static $allowedInputfieldTypes = array(
@@ -74,7 +81,7 @@ class ProcessTextareaPreview extends TextareaPreviewBaseProcess implements Modul
         return array(
             'title'      => self::TITLE,
             'summary'    => 'Adds a preview and zoom button to regular text areas for live preview',
-            'version'    => 15,
+            'version'    => 16,
             'author'     => 'Christian Raunitschka (owzim)',
             'href'       => 'https://github.com/owzim/ProcessTextareaPreview',
             'autoload'   => true
@@ -111,9 +118,32 @@ class ProcessTextareaPreview extends TextareaPreviewBaseProcess implements Modul
         $this->addHookAfter('ProcessPageEdit::execute', $this, 'hook_ProcessPageEdit_execute');
 
 
+        $this->addHookAfter('InputfieldTextarea::getConfigInputfields', function(HookEvent $event) {
+            
+            $inputfield = $event->object;
+
+            if (!self::isAllowedInputfield($inputfield)) return;
+
+            
+            $fields = $event->return;
+            
+                $wrapper = $this->modules->get('InputfieldFieldset'); 
+                $wrapper->label = $this->getTitle() . ': Settings';
+                $wrapper->icon = 'eye';
+                $wrapper->collapsed = Inputfield::collapsedNo; 
+
+            $fields->append($wrapper);
+            
+            TextareaPreviewConfigHelper::appendToInputFieldSettings($inputfield, $wrapper, self::$defaultConfig);
+            
+            $event->return = $fields;
+            
+        });
+        
+
         $this->jsConfig = array(
             'customCssPath' => $this->customCssPath,
-            'registerChangesInterval' => $this->registerChangesInterval
+            'trackChangesInterval' => $this->trackChangesInterval
         );
 
 
@@ -126,10 +156,12 @@ class ProcessTextareaPreview extends TextareaPreviewBaseProcess implements Modul
         // TODO: could not yet find another way to prevent this hook from running in other places than "page edit"
         if ($this->pages->get($this->input->get->id) instanceof NullPage) return;
         
-        $className = get_class($inputfield);
-
-        // currently only support for plain textarea
-        if(!in_array($className, self::$allowedInputfieldTypes)) return;
+        ChromePhp::log($inputfield->getAttributes());
+        ChromePhp::log($inputfield->customCssPath);
+        ChromePhp::log($inputfield->cssTheme);
+        ChromePhp::log($inputfield->get("cssTheme"));
+        
+        if (!self::isAllowedInputfield($inputfield)) return;
 
         $fieldOutput = $event->return;
 
@@ -146,7 +178,6 @@ class ProcessTextareaPreview extends TextareaPreviewBaseProcess implements Modul
 
             'previewWrapperDomID'  => "TAP-wrapper_{$fieldName}",
             'iframeDomID'          => "TAP-previewContent_{$fieldName}",
-
 
             'params' => json_encode(array_merge($this->jsConfig, array(
                 'iframeUrl'            => $this->getPageUrl() . self::IFRAME_URL_SEGMENT . $urlSegements,
@@ -280,5 +311,15 @@ class ProcessTextareaPreview extends TextareaPreviewBaseProcess implements Modul
     protected function getVersion() {
         $moduleInfo = self::getModuleInfo();
         return $moduleInfo['version'];
+    }
+    
+    protected function getTitle() {
+        $moduleInfo = self::getModuleInfo();
+        return $moduleInfo['title'];
+    }
+    
+    protected static function isAllowedInputfield($inputfield) {
+        $className = get_class($inputfield);
+        return in_array($className, self::$allowedInputfieldTypes);
     }
 }

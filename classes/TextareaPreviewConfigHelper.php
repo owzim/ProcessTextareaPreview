@@ -77,4 +77,57 @@ class TextareaPreviewConfigHelper {
 
         return $form;
     }
+    
+    
+    public static function appendToInputFieldSettings($inputfield, $parent, $config) {
+
+        $modules = wire('modules');
+
+        $inputfield = (object) $inputfield; // cast to object, because it's prettier to acces keys
+        $config = (object) $config; // cast to object, because it's prettier to acces keys
+
+        foreach ($config as $key => $valueData) {
+            $valueData = (object)$valueData;
+            if(!isset($inputfield->$key)) {
+                $inputfield->$key = $valueData->value;
+            }
+        }
+
+        foreach ($config as $key => $valueData) {
+
+            $valueData = (object) $valueData; // cast to object, because it's prettier to acces keys
+            $value = $valueData->value;
+            $label = isset($valueData->label) ? $valueData->label : $key;
+
+            if (isset($valueData->options)) {
+                $inputfieldType = isset($valueData->inputFieldtype) ? $valueData->inputFieldtype : self::DEFAULT_OPTIONS_FIELDTYPE;
+            } else {
+                $inputfieldType = isset($valueData->inputFieldtype) ? $valueData->inputFieldtype : self::DEFAULT_FIELDTYPE;
+            }
+
+            $f = $modules->get($inputfieldType);
+            $f->name = $key;
+            $f->label = $label;
+
+            if (isset($valueData->options)) {
+                foreach ($valueData->options as $optionLabel => $optionValue) {
+                    $f->addOption($optionValue, $optionLabel);
+                }
+            }
+
+            if (isset($valueData->attributes)) {
+                foreach ($valueData->attributes as $attributeKey => $attributeValue) {
+                    $f->set($attributeKey, $attributeValue);
+                }
+            }
+
+            if(isset($inputfield->$key)) {
+                $f->value = $inputfield->$key;
+            } else {
+                $f->value = $value;
+            }
+
+            $parent->append($f);
+        }
+    }
 }
