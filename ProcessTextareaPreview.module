@@ -29,6 +29,20 @@ class ProcessTextareaPreview extends TextareaPreviewBaseProcess implements Modul
     const IFRAME_URL_SEGMENT  = "preview";
 
     protected static $defaultConfig = array(
+        'trackChangesInterval'  => array(
+            'label' => 'Track changes interval',
+            'value' => 1000,
+            'inputfieldType' => 'InputfieldInteger',
+            'attributes' => array(
+                'icon' => 'refresh',
+                'columnWidth' => 25,
+                'type' => 'number',
+                'min' => 333,
+                'size' => 5,
+                'description' => 'The interval in milliseconds changes within the text area are tracked and sent to the server to be run through the text formatters - default is 1000',
+            )
+        ),
+        
         'cssTheme'  => array(
             'label' => 'CSS Theme',
             'value' => 'theme-github',
@@ -36,12 +50,14 @@ class ProcessTextareaPreview extends TextareaPreviewBaseProcess implements Modul
 
             'options' => array(
                 'Github' => 'theme-github',
-                'Solarized Dark' => 'theme-solarized-dark'
+                'Solarized Dark' => 'theme-solarized-dark',
             ),
 
             'attributes' => array(
                 'description' => 'Choose the theme that should be used for the preview.',
-                'optionColumns' => 1
+                'optionColumns' => 0,
+                'columnWidth' => 25,
+                'icon' => 'th-large',
             )
         ),
         'customCssPath'  => array(
@@ -49,21 +65,12 @@ class ProcessTextareaPreview extends TextareaPreviewBaseProcess implements Modul
             'value' => null,
             'inputfieldType' => 'InputfieldText',
             'attributes' => array(
+                'icon' => 'css3',
+                'columnWidth' => 50,
                 'description' => 'Path to custom CSS file that should be used for the preview.',
                 'notes' => 'path should be relative to site/ - example: templates/styles/custom-tap.css',
             )
         ),
-        'registerChangesInterval'  => array(
-            'label' => 'Register changes interval',
-            'value' => 1000,
-            'inputfieldType' => 'InputfieldInteger',
-            'attributes' => array(
-                'type' => 'number',
-                'min' => 333,
-                'size' => 5,
-                'description' => 'The interval in milliseconds changes within the text area are tracked and sent to the server to be run through the text formatters - default is 1000',
-            )
-        )
     );
 
     protected static $allowedInputfieldTypes = array(
@@ -113,7 +120,7 @@ class ProcessTextareaPreview extends TextareaPreviewBaseProcess implements Modul
 
         $this->jsConfig = array(
             'customCssPath' => $this->customCssPath,
-            'registerChangesInterval' => $this->registerChangesInterval
+            'trackChangesInterval' => $this->trackChangesInterval
         );
 
 

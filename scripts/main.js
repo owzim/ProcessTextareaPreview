@@ -75,7 +75,7 @@
 
         var fetchFormattedStringTrottled = throttle(
             fetchFormattedString,
-            params.registerChangesInterval || DEFAULT_AJAX_SAVE_DELAY,
+            params.trackChangesInterval || DEFAULT_AJAX_SAVE_DELAY,
             { trailing: true }
         );
 
