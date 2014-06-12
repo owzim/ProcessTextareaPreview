@@ -81,7 +81,7 @@ class ProcessTextareaPreview extends TextareaPreviewBaseProcess implements Modul
         return array(
             'title'      => self::TITLE,
             'summary'    => 'Adds a preview and zoom button to regular text areas for live preview',
-            'version'    => 16,
+            'version'    => 17,
             'author'     => 'Christian Raunitschka (owzim)',
             'href'       => 'https://github.com/owzim/ProcessTextareaPreview',
             'autoload'   => true
