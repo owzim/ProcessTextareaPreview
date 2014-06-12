@@ -39,3 +39,4 @@ publish
 # misc
 node_modules
 *.sublime-workspace
+codekit-config.json
