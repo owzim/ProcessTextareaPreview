@@ -1,46 +1,50 @@
-.TAP-icon,
-.TAP-wrapper,
-.TAP-preview,
-.TAP-field,
-.TAP-wrapper {
-  -webkit-transition: all 0.5s;
-  -moz-transition: all 0.5s;
-  -ms-transition: all 0.5s;
-  -o-transition: all 0.5s;
-  transition: all 0.5s; }
-
+/* line 13, scss/style.scss */
 .TAP-wrapper {
   position: relative; }
+  /* line 17, scss/style.scss */
   .TAP-wrapper.is-preview .TAP-preview,
   .TAP-wrapper.is-preview .TAP-field {
     width: 50%; }
+  /* line 21, scss/style.scss */
   .TAP-wrapper.is-preview .TAP-preview {
     opacity: 1; }
+  /* line 26, scss/style.scss */
   .TAP-wrapper.is-zoom {
     background: white;
     position: fixed;
     width: 100%;
     height: 100%;
+    padding-top: 2em;
     top: 0;
     left: 0;
     z-index: 201; }
+    /* line 37, scss/style.scss */
     .TAP-wrapper.is-zoom .TAP-preview,
     .TAP-wrapper.is-zoom .TAP-field {
       padding: 1em; }
+    /* line 40, scss/style.scss */
     .TAP-wrapper.is-zoom .TAP-preview {
       padding-right: 1em; }
+    /* line 44, scss/style.scss */
+    .TAP-wrapper.is-zoom .TAP-menuBar {
+      display: block; }
 
+/* line 52, scss/style.scss */
 .TAP-field {
   width: 100%; }
+  /* line 54, scss/style.scss */
   .TAP-field textarea {
     display: block;
     min-height: 100%; }
+    /* line 57, scss/style.scss */
     .TAP-wrapper.is-zoom .TAP-field textarea {
       border: 1px solid #ccc;
       padding: 0.6em; }
+      /* line 58, scss/style.scss */
       .TAP-wrapper.is-zoom .TAP-field textarea:focus {
         outline: none; }
 
+/* line 68, scss/style.scss */
 .TAP-preview {
   background: white;
   height: 100%;
@@ -54,18 +58,137 @@
   padding-left: 1em;
   z-index: 201; }
 
+/* line 84, scss/style.scss */
 .TAP-previewContent {
   width: 100%;
   border: none;
   height: 100%; }
 
+/* line 92, scss/style.scss */
 .TAP-icon {
   line-height: 1.4em !important;
   opacity: 0.3;
   padding: 0.1em;
   float: right; }
+  /* line 97, scss/style.scss */
   .InputfieldStateCollapsed .TAP-icon {
     opacity: 0; }
 
+/* line 102, scss/style.scss */
 .TAP-icon:hover {
   opacity: 1; }
+
+/* line 106, scss/style.scss */
+.TAP-menuBar {
+  background: #545454;
+  color: white;
+  display: none;
+  padding: 0.4em 1em;
+  position: fixed;
+  width: 100%;
+  z-index: 202; }
+
+/* line 116, scss/style.scss */
+.TAP-iconSave {
+  text-align: center;
+  font-size: 1.2em; }
+
+@-webkit-keyframes rotate {
+  /* line 127, scss/style.scss */
+  0% {
+    -webkit-transform: rotate(0deg);
+    -moz-transform: rotate(0deg);
+    -ms-transform: rotate(0deg);
+    -o-transform: rotate(0deg);
+    transform: rotate(0deg); }
+
+  /* line 130, scss/style.scss */
+  50% {
+    -webkit-transform: rotate(180deg);
+    -moz-transform: rotate(180deg);
+    -ms-transform: rotate(180deg);
+    -o-transform: rotate(180deg);
+    transform: rotate(180deg); }
+
+  /* line 133, scss/style.scss */
+  100% {
+    -webkit-transform: rotate(360deg);
+    -moz-transform: rotate(360deg);
+    -ms-transform: rotate(360deg);
+    -o-transform: rotate(360deg);
+    transform: rotate(360deg); } }
+
+@-moz-keyframes rotate {
+  /* line 127, scss/style.scss */
+  0% {
+    -webkit-transform: rotate(0deg);
+    -moz-transform: rotate(0deg);
+    -ms-transform: rotate(0deg);
+    -o-transform: rotate(0deg);
+    transform: rotate(0deg); }
+
+  /* line 130, scss/style.scss */
+  50% {
+    -webkit-transform: rotate(180deg);
+    -moz-transform: rotate(180deg);
+    -ms-transform: rotate(180deg);
+    -o-transform: rotate(180deg);
+    transform: rotate(180deg); }
+
+  /* line 133, scss/style.scss */
+  100% {
+    -webkit-transform: rotate(360deg);
+    -moz-transform: rotate(360deg);
+    -ms-transform: rotate(360deg);
+    -o-transform: rotate(360deg);
+    transform: rotate(360deg); } }
+
+@-o-keyframes rotate {
+  /* line 127, scss/style.scss */
+  0% {
+    -webkit-transform: rotate(0deg);
+    -moz-transform: rotate(0deg);
+    -ms-transform: rotate(0deg);
+    -o-transform: rotate(0deg);
+    transform: rotate(0deg); }
+
+  /* line 130, scss/style.scss */
+  50% {
+    -webkit-transform: rotate(180deg);
+    -moz-transform: rotate(180deg);
+    -ms-transform: rotate(180deg);
+    -o-transform: rotate(180deg);
+    transform: rotate(180deg); }
+
+  /* line 133, scss/style.scss */
+  100% {
+    -webkit-transform: rotate(360deg);
+    -moz-transform: rotate(360deg);
+    -ms-transform: rotate(360deg);
+    -o-transform: rotate(360deg);
+    transform: rotate(360deg); } }
+
+@keyframes rotate {
+  /* line 127, scss/style.scss */
+  0% {
+    -webkit-transform: rotate(0deg);
+    -moz-transform: rotate(0deg);
+    -ms-transform: rotate(0deg);
+    -o-transform: rotate(0deg);
+    transform: rotate(0deg); }
+
+  /* line 130, scss/style.scss */
+  50% {
+    -webkit-transform: rotate(180deg);
+    -moz-transform: rotate(180deg);
+    -ms-transform: rotate(180deg);
+    -o-transform: rotate(180deg);
+    transform: rotate(180deg); }
+
+  /* line 133, scss/style.scss */
+  100% {
+    -webkit-transform: rotate(360deg);
+    -moz-transform: rotate(360deg);
+    -ms-transform: rotate(360deg);
+    -o-transform: rotate(360deg);
+    transform: rotate(360deg); } }

@@ -75,7 +75,7 @@
 
         var fetchFormattedStringTrottled = throttle(
             fetchFormattedString,
-            params.registerChangesInterval || DEFAULT_AJAX_SAVE_DELAY,
+            params.trackChangesInterval || DEFAULT_AJAX_SAVE_DELAY,
             { trailing: true }
         );
 
@@ -89,7 +89,14 @@
 
         // event handlers
         (function() {
-
+            
+            
+            // debug
+            setTimeout(function() {
+                $iconPreview.click();
+                $iconZoom.click();
+            }, 100);
+            
             $iconPreview.click(function(e) {
 
                 e.preventDefault();

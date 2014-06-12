@@ -1,11 +1,4 @@
-
-@mixin transition($value) {
-	-webkit-transition: $value;
-	-moz-transition: $value;
-	-ms-transition: $value;
-	-o-transition: $value;
-	transition: $value;
-}
+@import "_init";
 
 $zindex: 201;
 
@@ -35,6 +28,7 @@ $zindex: 201;
 		position: fixed;
 		width: 100%;
 		height: 100%;
+		padding-top: 2em;
 		top: 0;
 		left: 0;
 		z-index: $zindex;
@@ -45,6 +39,10 @@ $zindex: 201;
 		}
 		.TAP-preview {
 			padding-right: 1em;
+		}
+		
+		.TAP-menuBar {
+			display: block;
 		}
 
 	}
@@ -105,7 +103,36 @@ $zindex: 201;
 	opacity: 1;
 }
 
+.TAP-menuBar {
+	background: lighten(black, 33);
+	color: white;
+	display: none;
+	padding: 0.4em 1em;
+	position: fixed;
+	width: 100%;
+	z-index: 202;
+}
+
+.TAP-iconSave {
+	text-align: center;
+	font-size: 1.2em;
+	// @include o-animation(rotate 0.8s linear 0s infinite);
+	// @include transform-origin( 51%, 48% );
+}
 
 
+@include o-keyframes(rotate) {
+
+	
+	0% {
+		@include transform(rotate(0deg));
+	}
+	50% {
+		@include transform(rotate(180deg));
+	}
+	100% {
+		@include transform(rotate(360deg));
+	}
+}
 
 

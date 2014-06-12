@@ -1,0 +1,57 @@
+$default-origin-x: 50;
+$default-origin-y: 50;
+
+
+@import "compass/css3/box-sizing"; 			// @include box-sizing(content-box);
+@import "compass/typography/text/ellipsis";	// @include ellipsis(true);
+@import "compass/css3/text-shadow"; 		// @include text-shadow(0 0 10px white);
+@import "compass/css3/background-size"; 	//
+@import "compass/css3/transition"; 			// @include single-transition(all, 0.2s);
+@import "compass/css3/inline-block"; 		// @include inline-block;
+@import "compass/css3/box-shadow"; 			// @include box-shadow(10px 10px 5px #000)
+@import "compass/css3/border-radius";		// @include box-shadow(10px 10px 5px #000)
+@import "compass/css3/transform";		// @include box-shadow(10px 10px 5px #000)
+@import "compass/utilities/general/clearfix"; // @include clearfix;
+@import "compass/css3/images"; 	// @include background(image-url("foo.png"),
+                      // linear-gradient(top left, #333, #0c0),
+                      // radial-gradient(#c00, #fff 100px));
+@import "compass/css3/opacity";
+@import "compass/css3/hyphenation";
+@import "compass/css3/background-clip";
+@import "compass/typography/text/force-wrap";
+
+
+@mixin o-animation($animation) {
+	
+	$o-animation-prefixes: ("-webkit-","-moz-", "-o-", "-ms-", "") !default;
+	
+	@each $prefix in $o-animation-prefixes {
+		#{$prefix}animation: $animation;
+	}
+}
+
+@mixin o-keyframes($animation-name) {
+	@-webkit-keyframes $animation-name {
+		@content;
+	}
+
+	@-moz-keyframes $animation-name {
+		@content;
+	}
+
+	@-o-keyframes $animation-name {
+		@content;
+	}
+
+	@keyframes $animation-name {
+		@content;
+	}
+}
+
+@mixin transition($value) {
+	// -webkit-transition: $value;
+	// -moz-transition: $value;
+	// -ms-transition: $value;
+	// -o-transition: $value;
+	// transition: $value;
+}

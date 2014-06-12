@@ -1,4 +1,12 @@
 <div class="TAP-wrapper" id="<?php echo $previewWrapperDomID ?>">
+    <div class="TAP-menuBar">
+        
+        
+        <i class="TAP-iconClose fa fa-eye"></i>
+        
+        <i class="TAP-iconSave fa fa-refresh"></i>
+        
+    </div>
     <div class="TAP-field"><?php echo $fieldOutput ?></div>
     <div class="TAP-preview">
         <iframe src="" class="TAP-previewContent" id="<?php echo $iframeDomID ?>"></iframe>
