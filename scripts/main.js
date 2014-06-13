@@ -91,11 +91,12 @@
         (function() {
             
             
+            
             // debug
-            setTimeout(function() {
-                $iconPreview.click();
-                $iconZoom.click();
-            }, 100);
+            // setTimeout(function() {
+            //     $iconPreview.click();
+            //     $iconZoom.click();
+            // }, 100);
             
             $iconPreview.click(function(e) {
 
@@ -127,8 +128,9 @@
                     $previewWrapper.removeClass(IS_ZOOM_CLASS);
                     $textarea.height("");
                     $body.css("overflow", originalBodyOverflow);
+                    $("#masthead").css("z-index","");
                 } else {
-
+                    $("#masthead").css("z-index", -1);
                     originalBodyOverflow = $body.css("overflow");
                     $body.css("overflow", "hidden");
 

@@ -89,7 +89,7 @@ class TextareaPreviewConfigHelper {
         foreach ($config as $key => $valueData) {
             $valueData = (object)$valueData;
             if(!isset($inputfield->$key)) {
-                $inputfield->$key = $valueData->value;
+                $inputfield->set($key, $valueData->value);
             }
         }
 

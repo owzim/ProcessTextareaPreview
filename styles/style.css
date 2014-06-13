@@ -14,7 +14,6 @@
     position: fixed;
     width: 100%;
     height: 100%;
-    padding-top: 2em;
     top: 0;
     left: 0;
     z-index: 201; }
@@ -86,15 +85,43 @@
   padding: 0.4em 1em;
   position: fixed;
   width: 100%;
-  z-index: 202; }
+  z-index: 202;
+  top: 0; }
 
-/* line 116, scss/style.scss */
+/* line 117, scss/style.scss */
+.TAP-saveIndicator {
+  position: fixed;
+  top: 5em;
+  left: 1em;
+  background: #545454;
+  padding: 0.56em 0.72em;
+  padding-bottom: 0.32em;
+  color: white;
+  -webkit-border-radius: 10%;
+  -moz-border-radius: 10%;
+  -ms-border-radius: 10%;
+  -o-border-radius: 10%;
+  border-radius: 10%;
+  background: rgba(0, 0, 0, 0.2);
+  pointer-events: none; }
+
+/* line 131, scss/style.scss */
 .TAP-iconSave {
   text-align: center;
-  font-size: 1.2em; }
+  font-size: 1.4em;
+  -webkit-animation: rotate 0.8s linear 0s infinite;
+  -moz-animation: rotate 0.8s linear 0s infinite;
+  -o-animation: rotate 0.8s linear 0s infinite;
+  -ms-animation: rotate 0.8s linear 0s infinite;
+  animation: rotate 0.8s linear 0s infinite;
+  -webkit-transform-origin: 50% 49%;
+  -moz-transform-origin: 50% 49%;
+  -ms-transform-origin: 50% 49%;
+  -o-transform-origin: 50% 49%;
+  transform-origin: 50% 49%; }
 
 @-webkit-keyframes rotate {
-  /* line 127, scss/style.scss */
+  /* line 142, scss/style.scss */
   0% {
     -webkit-transform: rotate(0deg);
     -moz-transform: rotate(0deg);
@@ -102,7 +129,7 @@
     -o-transform: rotate(0deg);
     transform: rotate(0deg); }
 
-  /* line 130, scss/style.scss */
+  /* line 145, scss/style.scss */
   50% {
     -webkit-transform: rotate(180deg);
     -moz-transform: rotate(180deg);
@@ -110,7 +137,7 @@
     -o-transform: rotate(180deg);
     transform: rotate(180deg); }
 
-  /* line 133, scss/style.scss */
+  /* line 148, scss/style.scss */
   100% {
     -webkit-transform: rotate(360deg);
     -moz-transform: rotate(360deg);
@@ -119,7 +146,7 @@
     transform: rotate(360deg); } }
 
 @-moz-keyframes rotate {
-  /* line 127, scss/style.scss */
+  /* line 142, scss/style.scss */
   0% {
     -webkit-transform: rotate(0deg);
     -moz-transform: rotate(0deg);
@@ -127,7 +154,7 @@
     -o-transform: rotate(0deg);
     transform: rotate(0deg); }
 
-  /* line 130, scss/style.scss */
+  /* line 145, scss/style.scss */
   50% {
     -webkit-transform: rotate(180deg);
     -moz-transform: rotate(180deg);
@@ -135,7 +162,7 @@
     -o-transform: rotate(180deg);
     transform: rotate(180deg); }
 
-  /* line 133, scss/style.scss */
+  /* line 148, scss/style.scss */
   100% {
     -webkit-transform: rotate(360deg);
     -moz-transform: rotate(360deg);
@@ -144,7 +171,7 @@
     transform: rotate(360deg); } }
 
 @-o-keyframes rotate {
-  /* line 127, scss/style.scss */
+  /* line 142, scss/style.scss */
   0% {
     -webkit-transform: rotate(0deg);
     -moz-transform: rotate(0deg);
@@ -152,7 +179,7 @@
     -o-transform: rotate(0deg);
     transform: rotate(0deg); }
 
-  /* line 130, scss/style.scss */
+  /* line 145, scss/style.scss */
   50% {
     -webkit-transform: rotate(180deg);
     -moz-transform: rotate(180deg);
@@ -160,7 +187,7 @@
     -o-transform: rotate(180deg);
     transform: rotate(180deg); }
 
-  /* line 133, scss/style.scss */
+  /* line 148, scss/style.scss */
   100% {
     -webkit-transform: rotate(360deg);
     -moz-transform: rotate(360deg);
@@ -169,7 +196,7 @@
     transform: rotate(360deg); } }
 
 @keyframes rotate {
-  /* line 127, scss/style.scss */
+  /* line 142, scss/style.scss */
   0% {
     -webkit-transform: rotate(0deg);
     -moz-transform: rotate(0deg);
@@ -177,7 +204,7 @@
     -o-transform: rotate(0deg);
     transform: rotate(0deg); }
 
-  /* line 130, scss/style.scss */
+  /* line 145, scss/style.scss */
   50% {
     -webkit-transform: rotate(180deg);
     -moz-transform: rotate(180deg);
@@ -185,7 +212,7 @@
     -o-transform: rotate(180deg);
     transform: rotate(180deg); }
 
-  /* line 133, scss/style.scss */
+  /* line 148, scss/style.scss */
   100% {
     -webkit-transform: rotate(360deg);
     -moz-transform: rotate(360deg);

@@ -120,8 +120,10 @@ class ProcessTextareaPreview extends TextareaPreviewBaseProcess implements Modul
 
         $this->addHookAfter('InputfieldTextarea::getConfigInputfields', function(HookEvent $event) {
             
+            // working good
+            
             $inputfield = $event->object;
-
+            
             if (!self::isAllowedInputfield($inputfield)) return;
 
             
@@ -156,12 +158,34 @@ class ProcessTextareaPreview extends TextareaPreviewBaseProcess implements Modul
         // TODO: could not yet find another way to prevent this hook from running in other places than "page edit"
         if ($this->pages->get($this->input->get->id) instanceof NullPage) return;
         
-        ChromePhp::log($inputfield->getAttributes());
-        ChromePhp::log($inputfield->customCssPath);
-        ChromePhp::log($inputfield->cssTheme);
-        ChromePhp::log($inputfield->get("cssTheme"));
+       
         
         if (!self::isAllowedInputfield($inputfield)) return;
+        
+        
+        // not working, values are not accessible
+        
+        // ChromePhp::log('-----');
+
+        // ChromePhp::log($inputfield->name);
+        // ChromePhp::log('rows',                 $inputfield->get("rows"));
+        // ChromePhp::log('----');
+        // ChromePhp::log('trackChangesInterval', $inputfield->get("trackChangesInterval"));
+        // ChromePhp::log('cssTheme',             $inputfield->get("cssTheme"));
+        // ChromePhp::log('customCssPath',        $inputfield->get("customCssPath"));
+        // ChromePhp::log('----');
+        // ChromePhp::log('trackChangesInterval', $inputfield->getSetting("trackChangesInterval"));
+        // ChromePhp::log('cssTheme',             $inputfield->getSetting("cssTheme"));
+        // ChromePhp::log('customCssPath',        $inputfield->getSetting("customCssPath"));
+        // ChromePhp::log('----');
+        // ChromePhp::log('trackChangesInterval', $inputfield->getAttribute("trackChangesInterval"));
+        // ChromePhp::log('cssTheme',             $inputfield->getAttribute("cssTheme"));
+        // ChromePhp::log('customCssPath',        $inputfield->getAttribute("customCssPath"));
+        // ChromePhp::log('----');
+        // ChromePhp::log('trackChangesInterval', $inputfield->attr("trackChangesInterval"));
+        // ChromePhp::log('cssTheme',             $inputfield->attr("cssTheme"));
+        // ChromePhp::log('customCssPath',        $inputfield->attr("customCssPath"));
+        // ChromePhp::log('----------');
 
         $fieldOutput = $event->return;
 
